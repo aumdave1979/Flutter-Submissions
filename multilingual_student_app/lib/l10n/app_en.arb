@@ -1,0 +1,10 @@
+{
+  "appTitle": "Student Information",
+  "welcome": "Welcome",
+  "studentName": "Student Name",
+  "language": "Select Language",
+  "today": "Today's Date",
+  "number": "Student Count",
+  "save": "Save Language",
+  "languageSaved": "Language saved successfully"
+}
