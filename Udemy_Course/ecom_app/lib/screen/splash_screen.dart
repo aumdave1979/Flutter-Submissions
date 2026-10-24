@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:ecom_app/screen/login_screen.dart';
 
 class SplashScreen extends StatefulWidget {
   const SplashScreen({super.key});
@@ -15,10 +14,8 @@ class _SplashScreenState extends State<SplashScreen> {
 
     // Navigate to Login Screen after 3 seconds
     Future.delayed(const Duration(seconds: 3), () {
-      Navigator.pushReplacement(
-        context,
-        MaterialPageRoute(builder: (context) => LoginScreen()),
-      );
+      if (!mounted) return;
+      Navigator.pushReplacementNamed(context, '/login');
     });
   }
 
@@ -29,7 +26,7 @@ class _SplashScreenState extends State<SplashScreen> {
       body: Center(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
-          children: [
+          children: const [
             Icon(Icons.flutter_dash, size: 70, color: Colors.white),
             SizedBox(height: 20),
             Text('My App', style: TextStyle(fontSize: 20, color: Colors.white)),
