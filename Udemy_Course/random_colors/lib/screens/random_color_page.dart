@@ -10,7 +10,7 @@ class RandomColorPage extends StatefulWidget {
 
 class _RandomColorPageState extends State<RandomColorPage> {
   Color _containerColor = Colors.blue;
-  Color _textColor = Colors.white;
+  Color _textColor = Colors.white;  
   Color _fabColor = Colors.blue;
 
   Color _getRandomColor() {

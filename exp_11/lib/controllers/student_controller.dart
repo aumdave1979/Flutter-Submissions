@@ -10,7 +10,7 @@ class StudentController {
     await _db.add({'name': name, 'rollNumber': rollNumber});
   }
 
-  // Read (with Search capability)
+  // Read (with Search capabil  ity)
   Stream<QuerySnapshot> getStudents([String searchQuery = '']) {
     if (searchQuery.isEmpty) {
       return _db.snapshots();
