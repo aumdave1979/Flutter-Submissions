@@ -10,8 +10,10 @@ class CartItem {
 
 class CartController extends ChangeNotifier {
   final Map<int, CartItem> _items = {};
+  final List<Product> _wishlist = [];
 
   List<CartItem> get items => _items.values.toList();
+  List<Product> get wishlist => _wishlist;
 
   int get totalQuantity =>
       _items.values.fold(0, (sum, item) => sum + item.quantity);
@@ -21,7 +23,7 @@ class CartController extends ChangeNotifier {
     (sum, item) => sum + (item.product.price * item.quantity),
   );
 
-  double get tax => subtotal * 0.05; // 5% tax
+  double get tax => subtotal * 0.05;
   double get total => subtotal + tax;
 
   void addToCart(Product product) {
@@ -39,6 +41,23 @@ class CartController extends ChangeNotifier {
       _items[productId]!.quantity--;
     } else {
       _items.remove(productId);
+    }
+    notifyListeners();
+  }
+
+  void clearCart() {
+    _items.clear();
+    notifyListeners();
+  }
+
+  // Task 1: Wishlist methods
+  bool isWishlisted(int productId) => _wishlist.any((p) => p.id == productId);
+
+  void toggleWishlist(Product product) {
+    if (isWishlisted(product.id)) {
+      _wishlist.removeWhere((p) => p.id == product.id);
+    } else {
+      _wishlist.add(product);
     }
     notifyListeners();
   }

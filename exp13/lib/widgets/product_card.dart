@@ -4,8 +4,16 @@ import '../models/product.dart';
 class ProductCard extends StatelessWidget {
   final Product product;
   final VoidCallback onAdd;
+  final bool isWishlisted;
+  final VoidCallback onToggleWishlist;
 
-  const ProductCard({super.key, required this.product, required this.onAdd});
+  const ProductCard({
+    super.key,
+    required this.product,
+    required this.onAdd,
+    required this.isWishlisted,
+    required this.onToggleWishlist,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -26,7 +34,19 @@ class ProductCard extends StatelessWidget {
         subtitle: Text(
           '${product.category} • \$${product.price.toStringAsFixed(2)}',
         ),
-        trailing: ElevatedButton(onPressed: onAdd, child: const Text('Add')),
+        trailing: Row(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            IconButton(
+              icon: Icon(
+                isWishlisted ? Icons.favorite : Icons.favorite_border,
+                color: Colors.red,
+              ),
+              onPressed: onToggleWishlist,
+            ),
+            ElevatedButton(onPressed: onAdd, child: const Text('Add')),
+          ],
+        ),
       ),
     );
   }

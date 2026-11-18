@@ -5,6 +5,7 @@ import '../controllers/product_controller.dart';
 import '../controllers/cart_controller.dart';
 import '../widgets/product_card.dart';
 import 'cart_screen.dart';
+import 'wishlist_screen.dart';
 
 class ProductListScreen extends StatefulWidget {
   const ProductListScreen({super.key});
@@ -34,6 +35,15 @@ class _ProductListScreenState extends State<ProductListScreen> {
       appBar: AppBar(
         title: const Text('Shopping App'),
         actions: [
+          IconButton(
+            icon: const Icon(Icons.favorite, color: Colors.red),
+            onPressed: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (_) => const WishlistScreen()),
+              );
+            },
+          ),
           Stack(
             alignment: Alignment.center,
             children: [
@@ -66,11 +76,9 @@ class _ProductListScreenState extends State<ProductListScreen> {
       body: FutureBuilder<List<Product>>(
         future: _productsFuture,
         builder: (context, snapshot) {
-          // 1. Loading State
           if (snapshot.connectionState == ConnectionState.waiting) {
             return const Center(child: CircularProgressIndicator());
           }
-          // 2. Error State
           if (snapshot.hasError) {
             return Center(
               child: Text(
@@ -86,7 +94,6 @@ class _ProductListScreenState extends State<ProductListScreen> {
             ...allProducts.map((p) => p.category).toSet(),
           ];
 
-          // Filter by search and category
           final filtered = allProducts.where((p) {
             final matchesSearch = p.title.toLowerCase().contains(_searchQuery);
             final matchesCategory =
@@ -96,7 +103,6 @@ class _ProductListScreenState extends State<ProductListScreen> {
 
           return Column(
             children: [
-              // Search Bar
               Padding(
                 padding: const EdgeInsets.all(8.0),
                 child: TextField(
@@ -109,7 +115,6 @@ class _ProductListScreenState extends State<ProductListScreen> {
                       setState(() => _searchQuery = val.toLowerCase()),
                 ),
               ),
-              // Category Dropdown
               Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 12.0),
                 child: DropdownButton<String>(
@@ -123,7 +128,6 @@ class _ProductListScreenState extends State<ProductListScreen> {
                   onChanged: (val) => setState(() => _selectedCategory = val!),
                 ),
               ),
-              // Product List
               Expanded(
                 child: filtered.isEmpty
                     ? const Center(child: Text('No matching products found.'))
@@ -133,6 +137,10 @@ class _ProductListScreenState extends State<ProductListScreen> {
                           final product = filtered[index];
                           return ProductCard(
                             product: product,
+                            isWishlisted: cart.isWishlisted(product.id),
+                            onToggleWishlist: () => context
+                                .read<CartController>()
+                                .toggleWishlist(product),
                             onAdd: () => context
                                 .read<CartController>()
                                 .addToCart(product),
